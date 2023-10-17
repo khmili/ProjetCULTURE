@@ -46,6 +46,10 @@ import javax.swing.JOptionPane;
 import org.controlsfx.control.Notifications;
 import edu.connexion4se3.services.ServiceCategory;
 import edu.connexion4se3.services.ServiceCulture;
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
 /**
  * FXML Controller class
@@ -93,6 +97,16 @@ public class FXMLcategoryController implements Initializable {
         
     }
     
+     @FXML
+    private Button cultureButton;  // Reference to the Culture Page button
+
+    @FXML
+    private void navigateToCulture(ActionEvent event) throws IOException {
+        // Load the Culture page when the button is clicked
+        Parent root = FXMLLoader.load(getClass().getResource("culture.fxml"));
+        Scene scene = cultureButton.getScene();
+        scene.setRoot(root);
+    }
     
         public void show()
     {

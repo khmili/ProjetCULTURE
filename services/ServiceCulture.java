@@ -69,6 +69,40 @@ user.setRole(User.Role.valueOf(rs.getString("role")));
       return myList;
     }
      //////////////////////////IN PROGRESS/////////////////////////////////
+     public List <Culture> getALLbyIdUser(int id){
+            
+         ObservableList<Culture> myList = FXCollections.observableArrayList();
+    String requete=null;
+        try {
+            requete = "SELECT * FROM culture e inner join category c on e.category_id = c.id inner join user u on e.user_id=u.userId WHERE e.user_id=?";
+                        PreparedStatement pst = cnx.prepareStatement(requete);
+                        pst.setInt(1,id);
+                        ResultSet rs = pst.executeQuery(); // Execute the query
+
+            while (rs.next()) {
+            Culture e = new Culture();
+            User user = new User();
+            e.setId(rs.getInt("id"));
+            e.setLibelle(rs.getString("libelle"));
+            e.setDateRecolte(rs.getDate("dateRecolte"));
+            e.setDatePlantation(rs.getDate("datePlantation"));
+            e.setCategory_id(rs.getInt("category_id"));
+            e.setCategory_type(rs.getString("type"));
+            e.setRevenuesCultures(rs.getDouble("revenuesCultures"));
+            e.setCoutsPlantations(rs.getDouble("coutsPlantations"));
+            user.setUser_id(rs.getInt("user_id"));
+            user.setNom(rs.getString("nom"));
+user.setRole(User.Role.valueOf(rs.getString("role")));
+            e.setUser(user);
+
+            myList.add(e);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());        }
+   
+      return myList;
+    
+     }
           public List <Culture> getAllbyca() {
 ObservableList<Culture> myList = FXCollections.observableArrayList();
     String requete=null;

@@ -163,12 +163,21 @@ public class CultureController implements Initializable {
 
     public CultureController() {
     }
-    
 
+    @FXML
+    private Button categoryButton;  // Reference to the Category Page button
+
+    @FXML
+    private void navigateToCategory(ActionEvent event) throws IOException {
+        // Load the Category page when the button is clicked
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLcategory.fxml"));
+        Scene scene = categoryButton.getScene();
+        scene.setRoot(root);
+    }
  
     public void show()
     {
-    ObservableList<Culture> data = FXCollections.observableArrayList(se.getAll());
+    ObservableList<Culture> data = FXCollections.observableArrayList(se.getALLbyIdUser(2));
     
         colId.setCellValueFactory(new PropertyValueFactory("id"));
         colLibelle.setCellValueFactory(new PropertyValueFactory("libelle"));
@@ -211,12 +220,15 @@ public class CultureController implements Initializable {
                     return true;
                           } else if (String.valueOf(culture.getRevenuesCultures()).indexOf(lowerCaseFilter) != -1) {
                     return true;
-                    
-                    
-                    
-        
-                    
-                } else {
+                          }
+                          else if (culture.getDatePlantation() != null && culture.getDatePlantation().toString().contains(lowerCaseFilter)) {
+                              return true;
+                          } else if (culture.getDateRecolte() != null && culture.getDateRecolte().toString().contains(lowerCaseFilter)) {
+                              return true;
+                          }
+                          
+                          
+                          else {
                     return false; // Does not match.
                 }
             });
@@ -456,11 +468,18 @@ tfRevenuesCultures.clear();
       @FXML
     private void handleMouseClicked(MouseEvent event) {
     }
-  
-
+    
+        @FXML
         @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+            categoryButton.setOnAction(event -> {
+        try {
+            navigateToCategory(event);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    });
+        
 tfDatePlantation.setValue(LocalDate.parse(formatter.format(date)));
 tfDateRecolte.setValue(LocalDate.parse(formatter.format(date)));
 
